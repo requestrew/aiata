@@ -1417,6 +1417,7 @@
                 fetch('https://submit-form.com/CTbX1TGUV', {
                 method: 'POST',
                     body: formData
+                    "Content-Type": "application/json",
                 })
                 .then(response => response.text())
                 .then(() => {
